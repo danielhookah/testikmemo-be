@@ -26,6 +26,7 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.item = require("../models/item.model")(sequelize, Sequelize);
+db.tag = require("../models/tag.model")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.itemDate = require("../models/item-dates.model")(sequelize, Sequelize);
 
@@ -39,6 +40,17 @@ db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
   otherKey: "roleId"
+});
+
+db.tag.belongsToMany(db.item, {
+  through: "item_tags",
+  foreignKey: "tagId",
+  otherKey: "itemId"
+});
+db.item.belongsToMany(db.tag, {
+  through: "item_tags",
+  foreignKey: "itemId",
+  otherKey: "tagId"
 });
 
 db.item.hasMany(db.itemDate, {
