@@ -28,6 +28,12 @@ module.exports = function(app) {
     controller.postItem
   );
 
+  app.put(
+    "/api/item/:id",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.putItem
+  );
+
   // app.get(
   //   "/api/test/admin",
   //   [authJwt.verifyToken, authJwt.isAdmin],

@@ -102,8 +102,7 @@ exports.postItem = (req, res) => {
       Tag.findAll({
         where: {
           id: {
-            [Op.or]: [2]
-            // [Op.or]: req.body.tags
+            [Op.or]: req.body.tags
           }
         }
       }).then(tags => {
@@ -117,5 +116,58 @@ exports.postItem = (req, res) => {
         });
       });
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => {
+      res.status(400).send(error)
+    });
+};
+
+exports.putItem = (req, res) => {
+  var updateItem = {
+    title: req.body.title,
+    title2: req.body.title2,
+    label: req.body.label,
+    value: req.body.value,
+    created_at: req.body.created_at,
+    dates: req.body.dates.map(el => {
+      return {toDate: new Date(el)}
+    }),
+  };
+  Item.update(updateItem, {
+    where: {id: req.params.id},
+    returning: true,
+    include: [
+      {
+        model: ItemDate,
+        as: 'dates'
+      },
+      {
+        model: Tag,
+        as: 'tags'
+      }
+    ]
+  }).then(item => {
+    const updatedItem = item[1][0]
+    Tag.findAll({
+      where: {
+        id: {
+          [Op.or]: req.body.tags
+        }
+      }
+    }).then(tags => {
+      var myTags = [];
+      for (let i = 0; i < tags.length; i++) {
+        myTags.push(tags[i].title);
+      }
+      updatedItem.setTags(tags).then(() => {
+        updatedItem.set('tags', tags)
+        res.status(201).send(updatedItem)
+      });
+    })
+      .catch((error) => {
+        console.log(111)
+        console.log(error)
+        console.log(111)
+        res.status(400).send(error)
+      });
+  });
 };
