@@ -48,8 +48,8 @@ exports.getItem = async (req, res) => {
     ]
   })
     .then((item) => {
-      console.log(item[8])
-      console.log(1111)
+      // console.log(item[8])
+      // console.log(1111)
       if (!item) {
         return res.status(404).send({
           message: 'Item Not Found',
@@ -81,6 +81,7 @@ exports.postItem = (req, res) => {
       label: req.body.label,
       value: req.body.value,
       created_at: req.body.created_at,
+      userId: req.userId,
       dates: req.body.dates.map(el => {
         return {toDate: new Date(el)}
       }),
@@ -169,5 +170,21 @@ exports.putItem = (req, res) => {
         console.log(111)
         res.status(400).send(error)
       });
+  });
+};
+
+exports.toggleItemDone = (req, res) => {
+  var data = {
+    isDone: req.body.isDone,
+  };
+  ItemDate.update(data, {
+    where: {id: req.params.dateId, itemId: req.params.id},
+    returning: true,
+  }).then(itemDate => {
+    const updatedDate = itemDate[1][0]
+    res.status(201).send(updatedDate)
+  }).catch((error) => {
+    console.log(error)
+    res.status(400).send(error)
   });
 };

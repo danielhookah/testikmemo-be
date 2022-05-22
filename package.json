@@ -76,14 +76,14 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
+    "pg-hstore": "^2.3.3",
     "pm2": "^4.1.2",
+    "sequelize": "^6.19.0",
     "swagger-jsdoc": "^6.0.8",
     "swagger-ui-express": "^4.1.6",
     "validator": "^13.0.0",
     "winston": "^3.2.1",
-    "xss-clean": "^0.1.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.3"
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.7",

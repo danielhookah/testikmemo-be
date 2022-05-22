@@ -34,6 +34,12 @@ module.exports = function(app) {
     controller.putItem
   );
 
+  app.put(
+    "/api/item/:id/date/:dateId",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.toggleItemDone
+  );
+
   // app.get(
   //   "/api/test/admin",
   //   [authJwt.verifyToken, authJwt.isAdmin],

@@ -1,21 +1,31 @@
+const {DataTypes} = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
   // sequelize.queryInterface.addColumn('items', 'title3', { type: Sequelize.TEXT });
 
   const Item = sequelize.define("items", {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER
+    },
     title: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     title2: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     label: {
-      type: Sequelize.STRING
+      type: DataTypes.STRING
     },
     value: {
-      type: Sequelize.TEXT
+      type: DataTypes.TEXT
     },
     created_at: {
-      type: Sequelize.DATEONLY
+      type: DataTypes.DATEONLY,
     }
   });
 
