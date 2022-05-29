@@ -12,6 +12,9 @@ module.exports = (sequelize, Sequelize) => {
     title: {
       type: DataTypes.STRING,
     },
+    userId: {
+      type: DataTypes.INTEGER
+    },
   });
 
   return Tag;

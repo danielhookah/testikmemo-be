@@ -109,6 +109,7 @@ app.get("/", (req, res) => {
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/item.routes')(app);
+require('./routes/tag.routes')(app);
 
 function initial() {
     Role.create({
@@ -126,5 +127,5 @@ function initial() {
         name: "admin"
     });
 }
-
+console.log(123123)
 module.exports = app;

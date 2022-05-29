@@ -17,7 +17,7 @@ module.exports = function(app) {
   );
 
   app.get(
-    "/api/item/:date",
+    "/api/item",
     [authJwt.verifyToken],
     controller.getItem
   );

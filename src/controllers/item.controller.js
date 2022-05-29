@@ -34,7 +34,8 @@ exports.getItems = async (req, res) => {
 exports.getItem = async (req, res) => {
   Item.findAll({
     where: {
-      '$dates.toDate$': `${req.params.date} 00:00:00.000000 +00:00`
+      '$dates.toDate$': `${req.query.date} 00:00:00.000000 +00:00`,
+      userId: req.query.user
     },
     include: [
       {
@@ -48,8 +49,7 @@ exports.getItem = async (req, res) => {
     ]
   })
     .then((item) => {
-      // console.log(item[8])
-      // console.log(1111)
+      console.log(111111, item)
       if (!item) {
         return res.status(404).send({
           message: 'Item Not Found',
@@ -58,19 +58,10 @@ exports.getItem = async (req, res) => {
       return res.status(200).send(item);
     })
     .catch((error) => {
-      console.log(error);
+      console.log(22222, error);
       res.status(400).send(error);
     });
 };
-
-// add(req, res) {
-//   return Classroom
-//     .create({
-//       class_name: req.body.class_name,
-//     })
-//     .then((classroom) => res.status(201).send(classroom))
-//     .catch((error) => res.status(400).send(error));
-// },
 
 exports.postItem = (req, res) => {
   // Save User to Database
