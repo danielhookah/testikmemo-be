@@ -49,7 +49,6 @@ exports.getItem = async (req, res) => {
     ]
   })
     .then((item) => {
-      console.log(111111, item)
       if (!item) {
         return res.status(404).send({
           message: 'Item Not Found',

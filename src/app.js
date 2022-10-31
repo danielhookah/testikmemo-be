@@ -111,6 +111,15 @@ require('./routes/user.routes')(app);
 require('./routes/item.routes')(app);
 require('./routes/tag.routes')(app);
 
+// Build YOUrself
+require('./routes/_routes/habit.routes')(app);
+require('./routes/_routes/goal.routes')(app);
+require('./routes/_routes/phrase.routes')(app);
+require('./routes/_routes/progress.routes')(app);
+require('./routes/_routes/reward.routes')(app);
+// Build YOUrself
+
+
 function initial() {
     Role.create({
         id: 1,

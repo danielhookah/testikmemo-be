@@ -29,11 +29,19 @@ db.item = require("../models/item.model")(sequelize, Sequelize);
 db.tag = require("../models/tag.model")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.itemDate = require("../models/item-dates.model")(sequelize, Sequelize);
+// Build YOUrself
+db.habit = require("../models/_models/habit.model")(sequelize, Sequelize);
+db.day = require("../models/_models/day.model")(sequelize, Sequelize);
+db.goal = require("../models/_models/goal.model")(sequelize, Sequelize);
+db.progress = require("../models/_models/progress.model")(sequelize, Sequelize);
+db.reward = require("../models/_models/reward.model")(sequelize, Sequelize);
+db.phrase = require("../models/_models/phrase.model")(sequelize, Sequelize);
+// Build YOUrself
 
 // console.log(123)
-// db.sequelize.sync({
-//     alter: true,
-// });
+db.sequelize.sync({
+    alter: true,
+});
 // console.log(312)
 
 //
@@ -75,7 +83,31 @@ db.user.hasMany(db.item, {
 db.item.belongsTo(db.user, {
   foreignKey: 'userId',
 });
-//
+// Build YOUrself
+db.habit.hasMany(db.day, {
+  foreignKey: 'habitId',
+  as: 'days'
+});
+db.day.belongsTo(db.habit, {
+  foreignKey: 'habitId',
+});
+
+db.user.hasMany(db.habit, {
+  foreignKey: 'userId',
+  as: 'habits'
+});
+db.habit.belongsTo(db.user, {
+  foreignKey: 'userId',
+});
+
+db.goal.hasMany(db.goal, {
+  foreignKey: 'parentId',
+  as: 'children'
+});
+db.goal.belongsTo(db.goal, {
+  foreignKey: 'parentId',
+});
+// Build YOUrself
 
 db.ROLES = ["user", "admin", "moderator"];
 
