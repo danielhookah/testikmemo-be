@@ -24,19 +24,19 @@ module.exports = function(app) {
 
   app.post(
     "/api/habit",
-    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    [authJwt.verifyToken],
     controller.postHabit
   );
 
   app.put(
     "/api/habit/:id",
-    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    [authJwt.verifyToken],
     controller.putHabit
   );
 
   app.put(
     "/api/habit/:id/set-day",
-    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    [authJwt.verifyToken],
     controller.setHabitDay
   );
 };

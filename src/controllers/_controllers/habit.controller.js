@@ -1,6 +1,7 @@
 const db = require("../../models");
 const Habit = db.habit;
 const Day = db.day;
+const User = db.user;
 
 const Op = db.Sequelize.Op;
 
@@ -128,9 +129,10 @@ exports.setHabitDay = async (req, res) => {
   };
 
   const habit = await Habit.findByPk(habitId);
-  if (!habit) {
+  const user = await User.findByPk(req.userId)
+  if (!habit || !user) {
     return res.status(404).send({
-      message: "Habit Not Found",
+      message: "Habit or User Not Found",
     });
   }
 
@@ -154,10 +156,24 @@ exports.setHabitDay = async (req, res) => {
           },
           { where: { id: habitId }, returning: true }
         );
+        const updatedUserData = await User.update(
+          {
+            ...user,
+            points: user.points + habit.point,
+            pointsAvailable: user.pointsAvailable + habit.point,
+          },
+          { where: { id: req.userId }, returning: true }
+        );
+        const updatedUser = updatedUserData[1][0];
         const updatedHabit = updatedHabitData[1][0];
+
         res
           .status(201)
-          .send({ totalDaysCompleted: updatedHabit.totalDaysCompleted });
+          .send({
+            totalDaysCompleted: updatedHabit.totalDaysCompleted,
+            points: updatedUser.points,
+            pointsAvailable: updatedUser.pointsAvailable,
+          });
         return;
       }
       res.status(201).send(createdDay);
@@ -172,17 +188,20 @@ exports.setHabitDay = async (req, res) => {
     const updatedDay = updatedDayData[1][0];
 
     let totalDaysCompletedUpdateVal = undefined;
+    let totalPoints = undefined;
     if (
       prevDayCompleted === habit.countPerDay &&
       updatedDay.completedCount.search("0") !== -1
     ) {
       totalDaysCompletedUpdateVal = -1;
+      totalPoints = -(habit.point);
     }
     if (
       prevDayCompleted.search("0") !== -1 &&
       updatedDay.completedCount === habit.countPerDay
     ) {
       totalDaysCompletedUpdateVal = 1;
+      totalPoints = habit.point;
     }
     if (totalDaysCompletedUpdateVal !== undefined) {
       const updatedHabitData = await Habit.update(
@@ -193,10 +212,29 @@ exports.setHabitDay = async (req, res) => {
         },
         { where: { id: habitId }, returning: true }
       );
-      console.log(updatedHabitData[1][0].totalDaysCompleted)
+      const updatedUserData = await User.update(
+          {
+            ...user,
+            points: user.points + totalPoints,
+            pointsAvailable: user.pointsAvailable + totalPoints,
+          },
+          { where: { id: req.userId }, returning: true }
+      );
+      console.log('req.userId', req.userId)
+      console.log(updatedUserData)
+      console.log(updatedUserData[1])
+      console.log('updatedHabitData')
+      console.log(updatedHabitData)
+      console.log(updatedHabitData[1])
+      const updatedUser = updatedUserData[1][0];
+
       res
         .status(201)
-        .send({ totalDaysCompleted: updatedHabitData[1][0].totalDaysCompleted });
+        .send({
+          totalDaysCompleted: updatedHabitData[1][0].totalDaysCompleted,
+          points: updatedUser.points,
+          pointsAvailable: updatedUser.pointsAvailable,
+        });
       return;
     }
   } catch (e) {
@@ -204,5 +242,9 @@ exports.setHabitDay = async (req, res) => {
     res.status(500).send(e);
   }
 
-  res.status(201).send({totalDaysCompleted: habit.totalDaysCompleted});
+  res.status(201).send({
+    totalDaysCompleted: habit.totalDaysCompleted,
+    points: user.points,
+    pointsAvailable: user.pointsAvailable,
+  });
 };

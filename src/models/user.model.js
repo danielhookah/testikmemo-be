@@ -25,6 +25,14 @@ module.exports = (sequelize, Sequelize) => {
       password: {
         type: DataTypes.STRING,
       },
+      points: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      pointsAvailable: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       defaultScope: {
