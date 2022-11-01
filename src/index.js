@@ -32,7 +32,7 @@ process.on('SIGTERM', () => {
 // NEW
 // const db = require('./queries')
 // const dbItems = require('./items-queries')
-const port = 3000
+const port = process.env.PORT
 //
 // app.get('/', (request, response) => {
 //   response.json({ info: 'Node.js, Express, and Postgres API' })

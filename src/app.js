@@ -40,7 +40,7 @@ app.use(xss());
 
 // enable cors
 app.use(cors());
-app.options('http://localhost:3001', cors());
+app.options(process.env.REACT_APP_APP_URL, cors());
 // const corsOptions = {
 //   origin: "http://localhost:8081"
 // };
