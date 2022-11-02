@@ -9,7 +9,6 @@ var jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const someOtherPlaintextPassword = "hehkeklol";
 
 exports.signup = (req, res) => {
   // Save User to Database

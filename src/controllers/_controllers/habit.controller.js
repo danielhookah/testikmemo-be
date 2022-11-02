@@ -220,12 +220,6 @@ exports.setHabitDay = async (req, res) => {
           },
           { where: { id: req.userId }, returning: true }
       );
-      console.log('req.userId', req.userId)
-      console.log(updatedUserData)
-      console.log(updatedUserData[1])
-      console.log('updatedHabitData')
-      console.log(updatedHabitData)
-      console.log(updatedHabitData[1])
       const updatedUser = updatedUserData[1][0];
 
       res
